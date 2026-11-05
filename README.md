@@ -24,32 +24,21 @@ React 19 · Express 5 · TypeScript · PostgreSQL · Docker
 cp api/.env.example api/.env
 ```
 
-Editá `api/.env` y completá como mínimo:
+Editá `api/.env` con tus valores:
 
 ```env
-DATABASE_URL="postgresql://usuario:contraseña@host:5432/base_de_datos"
+DATABASE_URL="postgresql://church_user:church_pass@postgres:5432/church_db"
 JWT_SECRET="una-clave-secreta-larga"
 JWT_REFRESH_SECRET="otra-clave-secreta-larga"
 ```
 
-### 2. Levantar
+> `postgres` es el nombre del servicio dentro de Docker — no cambiar ese host.
 
-**Con base de datos externa o local** (el `DATABASE_URL` apunta a tu propio PostgreSQL):
+### 2. Levantar
 
 ```bash
 docker compose up --build
 ```
-
-**Con el PostgreSQL incluido en Docker:**
-
-```bash
-docker compose --profile db up --build
-```
-
-> Si usás el postgres interno, el `DATABASE_URL` debe ser:
-> ```
-> postgresql://church_user:church_pass@postgres:5432/church_db
-> ```
 
 ### 3. Acceder
 
@@ -58,17 +47,19 @@ docker compose --profile db up --build
 | App      | http://localhost     |
 | API      | http://localhost/api |
 
-> En el primer arranque la API ejecuta `prisma db push` (crea todas las tablas) y `npm run seed` (carga roles y datos base). Esperá ~15 segundos.
+> En el primer arranque la API crea todas las tablas y carga los datos base. Esperá ~15 segundos.
 
 ---
 
-## Qué pasa al iniciar
+## Qué levanta Docker
 
 ```
-postgres  →  listo
-api       →  prisma db push  →  npm run seed  →  node dist/index.js
-web       →  nginx sirve la SPA, proxy /api/*  →  api:3000
+postgres  →  base de datos (puerto 5432)
+api       →  prisma db push → seed → Express en puerto 3000
+web       →  nginx sirve la SPA, proxy /api/* → api:3000
 ```
+
+Cada servicio corre en su propio contenedor. Los datos de postgres se persisten en un volumen Docker.
 
 ---
 
@@ -82,7 +73,7 @@ cd api && npm install && npm run dev    # http://localhost:3000
 cd web && npm install && npm run dev    # http://localhost:5173
 ```
 
-Ambos requieren `api/.env` con un `DATABASE_URL` accesible.
+Requiere `api/.env` con un `DATABASE_URL` accesible desde tu máquina.
 
 ---
 
@@ -107,6 +98,6 @@ Todas viven en `api/.env`. Ver `api/.env.example` para la lista completa.
 iglesia-app/
 ├── api/               # Backend — Express 5 + TypeScript + Prisma
 ├── web/               # Frontend — React 19 + Vite + TailwindCSS
-├── docker-compose.yml # Orquestación de servicios
+├── docker-compose.yml # Orquesta los 3 contenedores
 └── README.md
 ```
