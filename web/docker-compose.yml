@@ -1,9 +1,0 @@
-services:
-  web:
-    build:
-      context: .
-      args:
-        VITE_API_URL: ${VITE_API_URL:?Definir VITE_API_URL en el entorno, ej: https://api.tudominio.com}
-    restart: unless-stopped
-    ports:
-      - "${PORT:-80}:80"
