@@ -1,7 +1,32 @@
 services:
+  postgres:
+    profiles: ["db"]
+    image: postgres:16-alpine
+    restart: unless-stopped
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-church_db}
+      POSTGRES_USER: ${POSTGRES_USER:-church_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-church_pass}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-church_user} -d ${POSTGRES_DB:-church_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   api:
     build: .
     restart: unless-stopped
     ports:
       - "${PORT:-3000}:3000"
     env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+        required: false
+
+volumes:
+  postgres_data:
