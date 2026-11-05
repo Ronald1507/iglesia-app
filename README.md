@@ -12,10 +12,10 @@ React 19 + Vite frontend · Express 5 + TypeScript API · PostgreSQL.
 ### 1. Configure environment
 
 ```bash
-cp church-api/.env.example church-api/.env
+cp api/.env.example api/.env
 ```
 
-Edit `church-api/.env` and set at minimum:
+Edit `api/.env` and set at minimum:
 
 ```env
 DATABASE_URL="postgresql://user:password@host:5432/database"
@@ -64,17 +64,17 @@ app       → nginx serves the SPA, proxies /api/* → api:3000
 
 ```bash
 # Terminal 1 — API
-cd church-api && npm install && npm run dev   # http://localhost:3000
+cd api && npm install && npm run dev   # http://localhost:3000
 
 # Terminal 2 — App
-cd church-app && npm install && npm run dev   # http://localhost:5173
+cd web && npm install && npm run dev   # http://localhost:5173
 ```
 
-Both require `church-api/.env` with a reachable `DATABASE_URL`.
+Both require `api/.env` with a reachable `DATABASE_URL`.
 
 ## Environment variables
 
-All variables live in `church-api/.env`. See `church-api/.env.example` for the full list.
+All variables live in `api/.env`. See `api/.env.example` for the full list.
 
 | Variable               | Required | Description                        |
 |------------------------|----------|------------------------------------|
