@@ -5,13 +5,13 @@ services:
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-church_db}
-      POSTGRES_USER: ${POSTGRES_USER:-church_user}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-church_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-iglesia_db}
+      POSTGRES_USER: ${POSTGRES_USER:-admin_iglesia}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-iglesia_123#}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-church_user} -d ${POSTGRES_DB:-church_db}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin_iglesia} -d ${POSTGRES_DB:-iglesia_db}"]
       interval: 5s
       timeout: 5s
       retries: 5
