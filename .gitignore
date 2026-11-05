@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Environment — never commit secrets
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+church-app/dist/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Tooling artifacts (not project code)
+.playwright-mcp/
+.atl/
+.claude/
+openspec/
